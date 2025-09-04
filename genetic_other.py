@@ -14,31 +14,31 @@ class EvolutionTree:
         root_list = list(root)
         leaf_list = list(leaf)
         path = []
-        i = j = 0
+        j = 0
         
         while j < len(leaf_list):
-            if i < len(root_list) and root_list[i] == leaf_list[j]:
-                i += 1
+            if j < len(root_list) and root_list[j] == leaf_list[j]:
+                
                 j += 1
             else:
                 found = -1
-                for k in range(i, len(root_list)):
+                for k in range(j, len(root_list)):
                     if root_list[k] == leaf_list[j]:
                         found = k
                         break
                 
                 if found != -1:
-                    if found > i:
-                        deleted = ''.join(root_list[i:found])
+                    if found > j:
+                        deleted = ''.join(root_list[j:found])
                         path.append(("del", deleted))
-                        del root_list[i:found]
-                    i += 1
+                        del root_list[j:found]
+                    
                     j += 1
                 else:
-                    if i < len(root_list):
-                        path.append(("sub", f"{root_list[i]}→{leaf_list[j]}"))
-                        root_list[i] = leaf_list[j]
-                        i += 1
+                    if j < len(root_list):
+                        path.append(("sub", f"{root_list[j]}→{leaf_list[j]}"))
+                        root_list[j] = leaf_list[j]
+                        
                         j += 1
                     else:
                         break
@@ -47,8 +47,8 @@ class EvolutionTree:
             added = ''.join(leaf_list[j:])
             path.append(("add", added))
         
-        if i < len(root_list):
-            deleted = ''.join(root_list[i:])
+        if j < len(root_list):
+            deleted = ''.join(root_list[j:])
             path.append(("del", deleted))
         
         optimized_path = []
@@ -256,10 +256,21 @@ def build_optimal_tree(root, leaves):
     
     return tree
 
-if __name__ == "__main__":
+def test1():
     root = "abcdefg"
     leaves = ["cdhixyz"]
-
     tree = build_optimal_tree(root, leaves)
-    dot = tree.visualize()
-    dot.render('evolution_tree', view=True, format='png')
+    
+    assert len(tree.edge_count) == 5
+
+
+
+
+if __name__ == "__main__":
+    test1()
+    # root = "abcdefg"
+    # leaves = ["cdhixyz"]
+
+    # tree = build_optimal_tree(root, leaves)
+    # dot = tree.visualize()
+    # dot.render('evolution_tree', view=True, format='png')
