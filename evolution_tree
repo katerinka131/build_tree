@@ -1,0 +1,20 @@
+digraph {
+	node [shape=box style=rounded]
+	abcdefg [label="abcdefg
+(depth: 0)"]
+	abcdefg -> cdefg [label=ab color=red fontcolor=red]
+	cdefg [label="cdefg
+(depth: 1)"]
+	cdefg -> cdhfg [label="e→h" color=blue fontcolor=blue]
+	cdhfg [label="cdhfg
+(depth: 2)"]
+	cdhfg -> cdhig [label="f→i" color=blue fontcolor=blue]
+	cdhig [label="cdhig
+(depth: 3)"]
+	cdhig -> cdhix [label="g→x" color=blue fontcolor=blue]
+	cdhix [label="cdhix
+(depth: 4)"]
+	cdhix -> cdhixyz [label=yz color=green fontcolor=green]
+	cdhixyz [label="cdhixyz
+(depth: 5)" color=green penwidth=2]
+}

@@ -1,0 +1,29 @@
+// Алгоритм построения дерева
+digraph {
+	fontname=Arial fontsize=12 rankdir=TB
+	subgraph cluster_algorithm {
+		color=gray fontsize=14 label="Алгоритм" style=rounded
+		start [label="Начало" fillcolor=lightpink shape=ellipse style=filled]
+		step1 [label="Построить кратчайшие пути
+от корня до всех листьев
+и отсортировать по длине"]
+		step2 [label="Построить самый длинный путь
+от корня к листу"]
+		step3 [label="Для каждого оставшегося пути:"]
+		step3_1 [label="Проверяем есть ли общий узел с текущим графом
+от которого отходит меньше 3 стрелок"]
+		step3_1_yes [label="Достроить путь" fillcolor=lightyellow style=filled]
+		step3_1_no [label="Находим кратчайший путь
+от узлов с < 3 стрелками и  добавляем его " fillcolor=lightblue style=filled]
+		end [label="Граф построен" fillcolor=lightpink shape=ellipse style=filled]
+		start -> step1
+		step1 -> step2
+		step2 -> step3
+		step3 -> step3_1
+		step3_1 -> step3_1_yes [label="Да"]
+		step3_1 -> step3_1_no [label="Нет"]
+		step3_1_yes -> step3
+		step3_1_no -> step3
+		step3 -> end [label="Все пути обработаны"]
+	}
+}
