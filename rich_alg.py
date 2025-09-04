@@ -76,22 +76,31 @@ class EvolutionTree:
         return optimized_path
     
     def add_node(self, parent, child, op, depth):
+        print("добавить", parent, child, op, depth)
         """Добавить узел в дерево"""
-        if child not in self.nodes:
-            self.nodes[child] = {
-                "children": [],
-                "parent": parent,
-                "depth": depth,
-                "op": op,
-                "edge_count": 0
-            }
-            self.nodes[parent]["children"].append({
-                "node": child,
-                "op": op
-            })
-            self.nodes[parent]["edge_count"] += 1
+        
+        # Генерируем уникальное имя для узла, если он уже существует
+        original_child = child
+        counter = 1
+        while child in self.nodes:
+            # Добавляем суффикс к имени, чтобы сделать его уникальным
+            child = f"{original_child}_{counter}"
+            counter += 1
+        
+        self.nodes[child] = {
+            "children": [],
+            "parent": parent,
+            "depth": depth,
+            "op": op,
+            "edge_count": 0
+        }
+        self.nodes[parent]["children"].append({
+            "node": child,
+            "op": op
+        })
+        self.nodes[parent]["edge_count"] += 1
         return child
-    
+        
     def get_available_nodes(self, max_edges=3):
         """Получить узлы, к которым можно добавить детей (меньше 3 ребер)"""
         available = []
@@ -136,7 +145,7 @@ class EvolutionTree:
         """Добавить путь в дерево"""
         
         depth = 0
-        
+        print("path_sequence, leaf, current_node", path_sequence, leaf, current_node)
         for i, (op_type, op_value) in enumerate(path_sequence):
             # Генерируем имя дочернего узла
             if op_type == "add":
@@ -159,7 +168,7 @@ class EvolutionTree:
             if child_node != current_node:
                 depth += 1
                 current_node = self.add_node(current_node, child_node, (op_type, op_value), depth)
-        
+            print(child_node)
         return current_node
 
     def visualize(self):
@@ -253,9 +262,10 @@ def build_optimal_tree(root, leaves):
 if __name__ == "__main__":
     root = "fdxc"
     # leaves = ["dx", "xc", "c", "fn", "mn"]
-    leaves = ["fdm","fdl", "fdk","fdo"]
+    leaves = ["fdm","fdl", "fdk","fdo", "nm", "fdp"]
 
     tree = build_optimal_tree(root, leaves)
     dot = tree.visualize()
     dot.render('evolution_tree', view=True, format='png')
+    
     print("Дерево построено успешно!")

@@ -1,20 +1,38 @@
 digraph {
 	node [shape=box style=rounded]
 	fdxc [label="fdxc
-(depth: 0, edges: 1)"]
+(depth: 0, edges: 4)"]
+	fdxc -> fd [label=xc color=red fontcolor=red]
 	fdxc -> fdx [label=c color=red fontcolor=red]
+	fdxc -> fdx_1 [label=c color=red fontcolor=red]
+	fdxc -> fdx_2 [label=c color=red fontcolor=red]
+	fd [label="fd
+(depth: 1, edges: 1)"]
+	fd -> nd [label="f→n" color=blue fontcolor=blue]
+	nd [label="nd
+(depth: 2, edges: 1)"]
+	nd -> nm [label="d→m" color=blue fontcolor=blue]
+	nm [label="nm
+(depth: 3, edges: 0)" color=green penwidth=2]
 	fdx [label="fdx
-(depth: 1, edges: 4)"]
+(depth: 1, edges: 3)"]
 	fdx -> fdm [label="x→m" color=blue fontcolor=blue]
 	fdx -> fdl [label="x→l" color=blue fontcolor=blue]
 	fdx -> fdk [label="x→k" color=blue fontcolor=blue]
-	fdx -> fdo [label="x→o" color=blue fontcolor=blue]
 	fdm [label="fdm
 (depth: 2, edges: 0)" color=green penwidth=2]
 	fdl [label="fdl
 (depth: 1, edges: 0)" color=green penwidth=2]
 	fdk [label="fdk
 (depth: 1, edges: 0)" color=green penwidth=2]
+	fdx_1 [label="fdx_1
+(depth: 1, edges: 1)"]
+	fdx_1 -> fdo [label="x→o" color=blue fontcolor=blue]
 	fdo [label="fdo
+(depth: 2, edges: 0)" color=green penwidth=2]
+	fdx_2 [label="fdx_2
+(depth: 1, edges: 1)"]
+	fdx_2 -> fdp [label="x→p" color=blue fontcolor=blue]
+	fdp [label="fdp
 (depth: 2, edges: 0)" color=green penwidth=2]
 }
