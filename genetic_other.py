@@ -263,14 +263,40 @@ def test1():
     
     assert len(tree.edge_count) == 5
 
+def test2():
+    root = "abc"
+    leaves = ["bc"]
+    tree = build_optimal_tree(root, leaves)
+    
+    assert len(tree.edge_count) == 1
+
+def test3():
+    root = "bc"
+    leaves = ["abc"]
+    tree = build_optimal_tree(root, leaves)
+
+def test4():
+    root = "bcgh"
+    leaves = ["abgl"]
+    tree = build_optimal_tree(root, leaves)  
+    assert len(tree.edge_count) == 3
 
 
+def test5():
+    root = "a"
+    leaves = ["b"]
+    tree = build_optimal_tree(root, leaves)  
+    assert len(tree.edge_count) == 1
 
 if __name__ == "__main__":
     test1()
-    # root = "abcdefg"
-    # leaves = ["cdhixyz"]
+    test2()
+    test3()
+    test4()
+    test5()
+    root = "fdxc"
+    leaves = ["mn"]
 
-    # tree = build_optimal_tree(root, leaves)
-    # dot = tree.visualize()
-    # dot.render('evolution_tree', view=True, format='png')
+    tree = build_optimal_tree(root, leaves)
+    dot = tree.visualize()
+    dot.render('evolution_tree', view=True, format='png')
