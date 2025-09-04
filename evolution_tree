@@ -16,9 +16,9 @@ digraph {
 (depth: 3, edges: 0)" color=green penwidth=2]
 	fdx [label="fdx
 (depth: 1, edges: 3)"]
-	fdx -> fdm [label="x→m" color=blue fontcolor=blue]
-	fdx -> fdl [label="x→l" color=blue fontcolor=blue]
-	fdx -> fdk [label="x→k" color=blue fontcolor=blue]
+	fdx -> fdh [label="x→h" color=blue fontcolor=blue]
+	fdx -> fdu [label="x→u" color=blue fontcolor=blue]
+	fdx -> fdn [label="x→n" color=blue fontcolor=blue]
 	fdm [label="fdm
 (depth: 2, edges: 0)" color=green penwidth=2]
 	fdl [label="fdl
@@ -26,13 +26,25 @@ digraph {
 	fdk [label="fdk
 (depth: 1, edges: 0)" color=green penwidth=2]
 	fdx_1 [label="fdx_1
-(depth: 1, edges: 1)"]
-	fdx_1 -> fdo [label="x→o" color=blue fontcolor=blue]
+(depth: 1, edges: 3)"]
+	fdx_1 -> fdm [label="x→m" color=blue fontcolor=blue]
+	fdx_1 -> fdl [label="x→l" color=blue fontcolor=blue]
+	fdx_1 -> fdk [label="x→k" color=blue fontcolor=blue]
 	fdo [label="fdo
 (depth: 2, edges: 0)" color=green penwidth=2]
+	fdr [label="fdr
+(depth: 1, edges: 0)" color=green penwidth=2]
+	fde [label="fde
+(depth: 1, edges: 0)" color=green penwidth=2]
 	fdx_2 [label="fdx_2
-(depth: 1, edges: 1)"]
-	fdx_2 -> fdp [label="x→p" color=blue fontcolor=blue]
-	fdp [label="fdp
+(depth: 1, edges: 3)"]
+	fdx_2 -> fdo [label="x→o" color=blue fontcolor=blue]
+	fdx_2 -> fdr [label="x→r" color=blue fontcolor=blue]
+	fdx_2 -> fde [label="x→e" color=blue fontcolor=blue]
+	fdh [label="fdh
 (depth: 2, edges: 0)" color=green penwidth=2]
+	fdu [label="fdu
+(depth: 1, edges: 0)" color=green penwidth=2]
+	fdn [label="fdn
+(depth: 1, edges: 0)" color=green penwidth=2]
 }

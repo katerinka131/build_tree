@@ -76,31 +76,42 @@ class EvolutionTree:
         return optimized_path
     
     def add_node(self, parent, child, op, depth):
-        print("добавить", parent, child, op, depth)
+        print("добавить",parent, child, op, depth)
         """Добавить узел в дерево"""
-        
-        # Генерируем уникальное имя для узла, если он уже существует
-        original_child = child
-        counter = 1
-        while child in self.nodes:
-            # Добавляем суффикс к имени, чтобы сделать его уникальным
-            child = f"{original_child}_{counter}"
-            counter += 1
-        
-        self.nodes[child] = {
-            "children": [],
-            "parent": parent,
-            "depth": depth,
-            "op": op,
-            "edge_count": 0
-        }
-        self.nodes[parent]["children"].append({
-            "node": child,
-            "op": op
-        })
-        self.nodes[parent]["edge_count"] += 1
+        if child not in self.nodes:
+            self.nodes[child] = {
+                "children": [],
+                "parent": parent,
+                "depth": depth,
+                "op": op,
+                "edge_count": 0
+            }
+            self.nodes[parent]["children"].append({
+                "node": child,
+                "op": op
+            })
+            self.nodes[parent]["edge_count"] += 1
+        elif child in self.nodes and len(self.nodes[child]["children"]) == 3:
+            i = 1
+            while f"{child}_{i}" in self.nodes:
+                i += 1
+            self.nodes[f"{child}_{i}"] = self.nodes[child]
+
+            self.nodes[child] = {
+                "children": [],
+                "parent": parent,
+                "depth": depth,
+                "op": op,
+                "edge_count": 0
+            }
+            self.nodes[parent]["children"].append({
+                "node": f"{child}_{i}",
+                "op": op
+            })
+            self.nodes[parent]["edge_count"] += 1
+
         return child
-        
+    
     def get_available_nodes(self, max_edges=3):
         """Получить узлы, к которым можно добавить детей (меньше 3 ребер)"""
         available = []
@@ -109,37 +120,46 @@ class EvolutionTree:
                 available.append((node, data["depth"], data["edge_count"]))
         return available
     
-    def find_best_insertion_point(self, path, available_nodes):
+    def find_best_insertion_point(self, path_nodes, available_nodes):
         """Найти лучшую точку вставки для пути"""
-        best_score = float('-inf')
-        best_insertion = None
-        best_path_remainder = None
+        best_candidates = []
         
         for node, depth, edge_count in available_nodes:
+            print("node:", node)
             # Проверяем, можно ли вставить путь начиная с этого узла
-            if node in path:
-                node_index = path.index(node)
-                path_remainder = path[node_index + 1:]
+            if node in path_nodes:
+                node_index = path_nodes.index(node)
+                path_remainder = path_nodes[node_index + 1:]
                 
-                # Вычисляем score по критериям
-                # 1. Меньшее увеличение глубины (чем меньше новых узлов, тем лучше)
-                depth_increase = len(path_remainder)
+                # Вычисляем три критерия:
+                # 1. Увеличивается ли глубина дерева (0 - увеличивается, 1 - не увеличивается)
+                depth_increase = 0 if len(path_remainder) > 0 else 1
                 
-                # 2. Чем ниже начинается путь (большая глубина), тем лучше
-                start_depth = depth
+                # 2. Глубина этой вершины
+                vertex_depth = depth
                 
-                # 3. Чем меньше ребер у вершины, тем лучше
+                # 3. Количество доступных ребер
                 edges_available = 3 - edge_count
                 
-                # Комбинированный score (чем больше, тем лучше)
-                score = (-depth_increase * 1000) + (start_depth * 100) + edges_available
-                
-                if score > best_score:
-                    best_score = score
-                    best_insertion = node
-                    best_path_remainder = path_remainder
+                # Добавляем кандидата с его критериями
+                best_candidates.append({
+                    'node': node,
+                    'path_remainder': path_remainder,
+                    'criteria': (depth_increase, vertex_depth, edges_available),
+                    'score': (depth_increase, vertex_depth, edges_available)  # Для сортировки
+                })
         
-        return best_insertion, best_path_remainder
+        # Если нет подходящих кандидатов
+        if not best_candidates:
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return None, None
+        
+        # Сортируем кандидатов по критериям (в порядке убывания важности)
+        best_candidates.sort(key=lambda x: x['score'], reverse=True)
+        
+        # Выбираем лучшего кандидата
+        best_candidate = best_candidates[0]
+        return best_candidate['node'], best_candidate['path_remainder']
     
     def add_path_to_tree(self, path_sequence, leaf, current_node):
         """Добавить путь в дерево"""
@@ -253,6 +273,7 @@ def build_optimal_tree(root, leaves):
             # Добавляем путь от точки вставки
             tree.add_path_to_tree(remaining_ops, leaf, insertion_point)
         else:
+            print("not find")
             # Если не нашли подходящую точку вставки, добавляем полный путь от корня
             print("Добавляем от корня:", path)
             tree.add_path_to_tree(path, leaf, root)
@@ -262,7 +283,7 @@ def build_optimal_tree(root, leaves):
 if __name__ == "__main__":
     root = "fdxc"
     # leaves = ["dx", "xc", "c", "fn", "mn"]
-    leaves = ["fdm","fdl", "fdk","fdo", "nm", "fdp"]
+    leaves = ["fdm","fdl", "fdk","fdo", "nm", "fdr", "fde", "fdh", "fdu", "fdn"]
 
     tree = build_optimal_tree(root, leaves)
     dot = tree.visualize()
