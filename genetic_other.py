@@ -295,7 +295,7 @@ if __name__ == "__main__":
     test4()
     test5()
     root = "fdxc"
-    leaves = ["mn"]
+    leaves = ["fdxclpok"]
 
     tree = build_optimal_tree(root, leaves)
     dot = tree.visualize()

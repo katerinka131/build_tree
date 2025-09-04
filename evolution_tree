@@ -1,50 +1,39 @@
 digraph {
 	node [shape=box style=rounded]
-	fdxc [label="fdxc
-(depth: 0, edges: 4)"]
-	fdxc -> fd [label=xc color=red fontcolor=red]
-	fdxc -> fdx [label=c color=red fontcolor=red]
-	fdxc -> fdx_1 [label=c color=red fontcolor=red]
-	fdxc -> fdx_2 [label=c color=red fontcolor=red]
-	fd [label="fd
+	XYZ [label="XYZ
+(depth: 0, edges: 3)"]
+	XYZ -> XZ [label=Y color=red fontcolor=red]
+	XYZ -> Z [label=XY color=red fontcolor=red]
+	XYZ -> XYZA [label=A color=green fontcolor=green]
+	XZ [label="XZ
+(depth: 1, edges: 3)"]
+	XZ -> XZA [label=A color=green fontcolor=green]
+	XZ -> YZ [label="X→Y" color=blue fontcolor=blue]
+	XZ -> XY [label="Z→Y" color=blue fontcolor=blue]
+	XZA [label="XZA
+(depth: 2, edges: 0)" color=green penwidth=2]
+	Z [label="Z
 (depth: 1, edges: 1)"]
-	fd -> nd [label="f→n" color=blue fontcolor=blue]
-	nd [label="nd
-(depth: 2, edges: 1)"]
-	nd -> nm [label="d→m" color=blue fontcolor=blue]
-	nm [label="nm
+	Z -> ZA [label=A color=green fontcolor=green]
+	ZA [label="ZA
+(depth: 2, edges: 0)" color=green penwidth=2]
+	XYZA [label="XYZA
+(depth: 1, edges: 3)" color=green penwidth=2]
+	XYZA -> XYZB [label="A→B" color=blue fontcolor=blue]
+	XYZA -> XYZC [label="A→C" color=blue fontcolor=blue]
+	XYZA -> XYA [label=Z color=red fontcolor=red]
+	XYZB [label="XYZB
+(depth: 2, edges: 1)" color=green penwidth=2]
+	XYZB -> XYZD [label="B→D" color=blue fontcolor=blue]
+	XYZC [label="XYZC
+(depth: 2, edges: 0)" color=green penwidth=2]
+	XYA [label="XYA
+(depth: 2, edges: 0)" color=green penwidth=2]
+	YZ [label="YZ
+(depth: 2, edges: 0)" color=green penwidth=2]
+	XY [label="XY
+(depth: 2, edges: 0)" color=green penwidth=2]
+	XYZD [label="XYZD
 (depth: 3, edges: 0)" color=green penwidth=2]
-	fdx [label="fdx
-(depth: 1, edges: 3)"]
-	fdx -> fdh [label="x→h" color=blue fontcolor=blue]
-	fdx -> fdu [label="x→u" color=blue fontcolor=blue]
-	fdx -> fdn [label="x→n" color=blue fontcolor=blue]
-	fdm [label="fdm
-(depth: 2, edges: 0)" color=green penwidth=2]
-	fdl [label="fdl
-(depth: 1, edges: 0)" color=green penwidth=2]
-	fdk [label="fdk
-(depth: 1, edges: 0)" color=green penwidth=2]
-	fdx_1 [label="fdx_1
-(depth: 1, edges: 3)"]
-	fdx_1 -> fdm [label="x→m" color=blue fontcolor=blue]
-	fdx_1 -> fdl [label="x→l" color=blue fontcolor=blue]
-	fdx_1 -> fdk [label="x→k" color=blue fontcolor=blue]
-	fdo [label="fdo
-(depth: 2, edges: 0)" color=green penwidth=2]
-	fdr [label="fdr
-(depth: 1, edges: 0)" color=green penwidth=2]
-	fde [label="fde
-(depth: 1, edges: 0)" color=green penwidth=2]
-	fdx_2 [label="fdx_2
-(depth: 1, edges: 3)"]
-	fdx_2 -> fdo [label="x→o" color=blue fontcolor=blue]
-	fdx_2 -> fdr [label="x→r" color=blue fontcolor=blue]
-	fdx_2 -> fde [label="x→e" color=blue fontcolor=blue]
-	fdh [label="fdh
-(depth: 2, edges: 0)" color=green penwidth=2]
-	fdu [label="fdu
-(depth: 1, edges: 0)" color=green penwidth=2]
-	fdn [label="fdn
-(depth: 1, edges: 0)" color=green penwidth=2]
+	label="Максимальная глубина дерева: 3" labeljust=c labelloc=t
 }
