@@ -2,32 +2,68 @@ digraph {
 	node [shape=box style=rounded]
 	abxcd [label="abxcd
 (depth: 0, edges: 3)"]
-	abxcd -> ab [label=xcd color=red fontcolor=red]
-	abxcd -> abxd [label=c color=red fontcolor=red]
-	abxcd -> dc [label="a→d" color=blue fontcolor=blue]
-	ab [label="ab
-(depth: 1, edges: 1)"]
-	ab -> kb [label="a→k" color=blue fontcolor=blue]
-	kb [label="kb
+	abxcd -> mbxcd [label="a→m" color=blue fontcolor=blue]
+	abxcd -> kbxcd [label="a→k" color=blue fontcolor=blue]
+	abxcd -> cbxcd [label="a→c" color=blue fontcolor=blue]
+	mbxcd [label="mbxcd
+(depth: 1, edges: 3)"]
+	mbxcd -> mnxcd [label="b→n" color=blue fontcolor=blue]
+	mbxcd -> dbxcd [label="m→d" color=blue fontcolor=blue]
+	mbxcd -> lbxcd [label="m→l" color=blue fontcolor=blue]
+	mnxcd [label="mnxcd
 (depth: 2, edges: 1)"]
-	kb -> kl [label="b→l" color=blue fontcolor=blue]
+	mnxcd -> mnacd [label="x→a" color=blue fontcolor=blue]
+	mnacd [label="mnacd
+(depth: 3, edges: 1)"]
+	mnacd -> mnabd [label="c→b" color=blue fontcolor=blue]
+	mnabd [label="mnabd
+(depth: 4, edges: 1)"]
+	mnabd -> mnabx [label="d→x" color=blue fontcolor=blue]
+	mnabx [label="mnabx
+(depth: 5, edges: 1)"]
+	mnabx -> mnabxc [label=c color=green fontcolor=green]
+	mnabxc [label="mnabxc
+(depth: 6, edges: 0)" color=green penwidth=2]
+	kbxcd [label="kbxcd
+(depth: 1, edges: 3)"]
+	kbxcd -> klxcd [label="b→l" color=blue fontcolor=blue]
+	kbxcd -> cd [label=kbx color=red fontcolor=red]
+	kbxcd -> bxd [label=kc color=red fontcolor=red]
+	klxcd [label="klxcd
+(depth: 2, edges: 1)"]
+	klxcd -> kl [label=xcd color=red fontcolor=red]
 	kl [label="kl
 (depth: 3, edges: 0)" color=green penwidth=2]
-	abxd [label="abxd
+	cbxcd [label="cbxcd
 (depth: 1, edges: 2)"]
-	abxd -> cbxd [label="a→c" color=blue fontcolor=blue]
-	abxd -> bxd [label=a color=red fontcolor=red]
+	cbxcd -> cbxd [label=c color=red fontcolor=red]
+	cbxcd -> abxcd_1 [label="c→a" color=blue fontcolor=blue]
 	cbxd [label="cbxd
 (depth: 2, edges: 0)" color=green penwidth=2]
-	bxd [label="bxd
-(depth: 2, edges: 0)" color=green penwidth=2]
-	dc [label="dc
-(depth: 1, edges: 1)" color=green penwidth=2]
-	dc -> c [label=d color=red fontcolor=red]
-	c [label="c
+	dbxcd [label="dbxcd
 (depth: 2, edges: 1)"]
-	c -> ch [label=h color=green fontcolor=green]
+	dbxcd -> dc [label=bxd color=red fontcolor=red]
+	dc [label="dc
+(depth: 3, edges: 0)" color=green penwidth=2]
+	cd [label="cd
+(depth: 2, edges: 1)"]
+	cd -> ch [label="d→h" color=blue fontcolor=blue]
 	ch [label="ch
 (depth: 3, edges: 0)" color=green penwidth=2]
-	label="Глубина дерева: 3" labeljust=c labelloc=t
+	abxcd_1 [label="abxcd_1
+(depth: 2, edges: 1)"]
+	abxcd_1 -> ablcd_1 [label="x→l" color=blue fontcolor=blue]
+	ablcd_1 [label="ablcd_1
+(depth: 3, edges: 1)"]
+	ablcd_1 -> abl [label=cd color=red fontcolor=red]
+	abl [label="abl
+(depth: 4, edges: 0)" color=green penwidth=2]
+	lbxcd [label="lbxcd
+(depth: 2, edges: 1)"]
+	lbxcd -> lbxcdp [label=p color=green fontcolor=green]
+	lbxcdp [label="lbxcdp
+(depth: 3, edges: 0)" color=green penwidth=2]
+	bxd [label="bxd
+(depth: 2, edges: 0)" color=green penwidth=2]
+	label="Глубина дерева: 6" labeljust=c labelloc=t
 }

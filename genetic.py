@@ -12,120 +12,128 @@ class EvolutionTree:
         self.edge_types = defaultdict(set)
         self.max_depth = 0  # Переменная для отслеживания максимальной глубины
         
-    def find_evolution_path(self, root, leaf):
-        """Находит путь эволюции от root к leaf с использованием алгоритма редакционного расстояния"""
-        n1, n2 = len(root), len(leaf)
+    def find_evolution_path(self, w1, w2):
+        """
+        Находит максимальную общую последовательность символов, где позиции в w2
+        не раньше, чем соответствующие позиции в w1.
+        Возвращает список операций в формате [('op_type', value), ...]
+        """
+        w1 = str(w1)
+        w2 = str(w2)
+        n1, n2 = len(w1), len(w2)
         
-        dp = [[0] * (n1 + 1) for _ in range(n2 + 1)]
-        path = [[None] * (n1 + 1) for _ in range(n2 + 1)]
+        # Находим максимальную общую подпоследовательность
+        common = []
+        last = -1
+        list_ind_w1 = []
+        list_ind_w2 = []
         
-        for p in range(n1 + 1):
-            dp[0][p] = p
-            if p > 0:
-                path[0][p] = ('delete', 0, p-1)
+        for i in range(n1):
+            if last == -1:
+                for j in range(min(i+1, n2)):
+                    if w1[i] == w2[j]:
+                        list_ind_w1.append(i)
+                        list_ind_w2.append(j)
+                        last = j
+                        break
+            else:
+                for j in range(last+1, min(last + i - list_ind_w1[-1] + 1, n2)):
+                    if w1[i] == w2[j]:
+                        list_ind_w1.append(i)
+                        list_ind_w2.append(j)
+                        last = j
+                        break
         
-        for q in range(1, n2 + 1):
-            dp[q][0] = q
-            path[q][0] = ('insert', q-1, 0)
-        
-        # Заполнение DP таблицы
-        for q in range(1, n2 + 1):
-            for p in range(1, n1 + 1):
-                i = p - 1  # Индекс в root
-                j = q - 1  # Индекс в leaf
-                
-                cost = 0 if root[i] == leaf[j] else 1
-                
-                options = [
-                    (dp[q-1][p] + 1, ('insert', q-1, p)),      # Вставка
-                    (dp[q][p-1] + 1, ('delete', q, p-1)),      # Удаление
-                    (dp[q-1][p-1] + cost, ('change', q-1, p-1)) # Замена/совпадение
-                ]
-                
-                min_val, best_path = min(options, key=lambda x: x[0])
-                dp[q][p] = min_val
-                path[q][p] = best_path
-        
+        # Строим операции на основе найденной общей подпоследовательности
         operations = []
-        q, p = n2, n1
+        current_w2_pos = 0
+        current_w1_pos = 0
         
-        while q > 0 or p > 0:
-            if path[q][p] is None:
-                break
-                
-            op_type, next_q, next_p = path[q][p]
+        # Обрабатываем символы до первой общей позиции
+        for i in range(len(list_ind_w2)):
+            if i == 0:
+                # Символы перед первым общим символом
+                for j in range(list_ind_w2[0]):
+                    if current_w1_pos < n1:
+                        operations.append(('sub', f"{w1[current_w1_pos]}→{w2[j]}"))
+                        current_w1_pos += 1
+                    else:
+                        operations.append(('add', w2[j]))
+                    current_w2_pos = j + 1
             
-            if op_type == 'insert':
-                # Вставка символа leaf[q-1] перед позицией p
-                operations.append(('add', leaf[q-1], p))
-            elif op_type == 'delete':
-                # Удаление символа root[p-1] на позиции p-1
-                operations.append(('del', root[p-1], p-1))
-            elif op_type == 'change':
-                # Замена символа root[p-1] на leaf[q-1]
-                if root[p-1] != leaf[q-1]:
-                    operations.append(('sub', f"{root[p-1]}→{leaf[q-1]}", p-1))
-                # Для совпадений не добавляем операцию
+            # Добавляем общий символ (не добавляем операцию для совпадений)
+            if current_w1_pos < list_ind_w1[i]:
+                # Удаляем лишние символы из w1
+                for k in range(current_w1_pos, list_ind_w1[i]):
+                    operations.append(('del', w1[k]))
             
-            q, p = next_q, next_p
-        
-        operations.reverse()
-        
-        # Преобразование в формат оригинальной функции
-        formatted_path = []
-        current_pos = 0
-        
-        for op in operations:
-            op_type, value, pos = op
+            current_w1_pos = list_ind_w1[i] + 1
+            current_w2_pos = list_ind_w2[i] + 1
             
-            if op_type == 'add':
-                formatted_path.append(("add", value))
-                current_pos += 1
-                
-            elif op_type == 'del':
-                # Проверяем, есть ли следующие удаления для группировки
-                delete_chars = [value]
-                next_idx = operations.index(op) + 1 if operations.index(op) + 1 < len(operations) else -1
-                
-                if next_idx != -1 and operations[next_idx][0] == 'del' and operations[next_idx][2] == pos + 1:
-                    # Группируем последовательные удаления
-                    while next_idx < len(operations) and operations[next_idx][0] == 'del':
-                        delete_chars.append(operations[next_idx][1])
-                        next_idx += 1
-                    
-                    formatted_path.append(("del", ''.join(delete_chars)))
-                    # Пропускаем уже обработанные операции
-                    for _ in range(len(delete_chars) - 1):
-                        operations.pop(operations.index(op) + 1)
-                else:
-                    formatted_path.append(("del", value))
-                
-            elif op_type == 'sub':
-                formatted_path.append(("sub", value))
-                current_pos += 1
+            # Обрабатываем символы между общими символами
+            if i < len(list_ind_w2) - 1:
+                next_w2_pos = list_ind_w2[i+1]
+                for j in range(current_w2_pos, next_w2_pos):
+                    if current_w1_pos < n1:
+                        operations.append(('sub', f"{w1[current_w1_pos]}→{w2[j]}"))
+                        current_w1_pos += 1
+                    else:
+                        operations.append(('add', w2[j]))
+                    current_w2_pos = j + 1
         
-        # Оптимизация пути (сохранение логики оригинальной функции)
+        # Обрабатываем символы после последней общей позиции
+        # Оставшиеся символы в w2
+        for j in range(current_w2_pos, n2):
+            if current_w1_pos < n1:
+                operations.append(('sub', f"{w1[current_w1_pos]}→{w2[j]}"))
+                current_w1_pos += 1
+            else:
+                operations.append(('add', w2[j]))
+        
+        # Оставшиеся символы в w1 (удаления)
+        for k in range(current_w1_pos, n1):
+            operations.append(('del', w1[k]))
+        
+        # Оптимизация пути (группировка последовательных операций одного типа)
         optimized_path = []
-        adds = []
-        dels = []
-        subs = []
+        i = 0
         
-        for op in formatted_path:
-            if op[0] == "add":
-                adds.append(op)
-            elif op[0] == "del":
-                dels.append(op)
-            elif op[0] == "sub":
-                subs.append(op)
-        
-        # Сохраняем порядок: сначала удаления, затем замены, затем добавления
-        while dels and subs:
-            optimized_path.append(dels.pop(0))
-            optimized_path.append(subs.pop(0))
-
-        optimized_path.extend(dels)
-        optimized_path.extend(subs)
-        optimized_path.extend(adds)
+        while i < len(operations):
+            op_type, value = operations[i]
+            
+            if op_type == 'del':
+                # Группируем последовательные удаления
+                delete_chars = [value]
+                j = i + 1
+                while j < len(operations) and operations[j][0] == 'del':
+                    delete_chars.append(operations[j][1])
+                    j += 1
+                
+                if len(delete_chars) > 1:
+                    optimized_path.append(('del', ''.join(delete_chars)))
+                    i = j
+                else:
+                    optimized_path.append(('del', value))
+                    i += 1
+            
+            elif op_type == 'add':
+                # Группируем последовательные добавления
+                add_chars = [value]
+                j = i + 1
+                while j < len(operations) and operations[j][0] == 'add':
+                    add_chars.append(operations[j][1])
+                    j += 1
+                
+                if len(add_chars) > 1:
+                    optimized_path.append(('add', ''.join(add_chars)))
+                    i = j
+                else:
+                    optimized_path.append(('add', value))
+                    i += 1
+            
+            else:  # sub
+                optimized_path.append(('sub', value))
+                i += 1
         
         return optimized_path
     
