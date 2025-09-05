@@ -1,5 +1,5 @@
 import unittest
-from genetic import EvolutionTree, build, build_optimal_tree
+from genetic import EvolutionTree,  build_optimal_tree
 
 class TestEvolutionTree(unittest.TestCase):
     
@@ -58,15 +58,7 @@ class TestEvolutionTree(unittest.TestCase):
         self.assertEqual(self.tree.nodes["roota"]["depth"], 1)
         self.assertEqual(self.tree.nodes["rootab"]["depth"], 2)
     
-    def test_build_function(self):
-        """Тест функции build"""
-        leaves = ["abc", "axc", "abcd"]
-        tree = build("root", leaves)
-        
-        self.assertEqual(len(tree.leaves), 3)
-        self.assertGreater(len(tree.nodes), 1)
-        for leaf in leaves:
-            self.assertIn(leaf, tree.leaves)
+   
     
     def test_build_optimal_tree(self):
         """Тест функции build_optimal_tree"""
@@ -86,33 +78,9 @@ class TestEvolutionTree(unittest.TestCase):
         self.assertTrue(hasattr(dot, 'node'))
         self.assertTrue(hasattr(dot, 'edge'))
 
-class TestEdgeCases(unittest.TestCase):
+
     
-    def test_empty_leaves(self):
-        """Тест с пустым списком листьев"""
-        tree = build("root", [])
-        self.assertEqual(len(tree.leaves), 0)
-        self.assertEqual(len(tree.nodes), 1)
     
-    def test_same_root_and_leaf(self):
-        """Тест когда корень и лист одинаковы"""
-        tree = build("root", ["root"])
-        self.assertEqual(len(tree.leaves), 1)
-        self.assertEqual(len(tree.nodes), 1)
-    
-    def test_duplicate_leaves(self):
-        """Тест с дублирующимися листьями"""
-        tree = build("root", ["leaf", "leaf"])
-        self.assertEqual(len(tree.leaves), 1)  # Дубликаты должны быть удалены
-    
-    def test_long_paths(self):
-        """Тест с длинными путями"""
-        long_string = "a" * 100
-        leaves = [long_string + str(i) for i in range(3)]
-        tree = build("root", leaves)
-        
-        self.assertEqual(len(tree.leaves), 3)
-        self.assertGreater(len(tree.nodes), 3)
 
 if __name__ == "__main__":
     unittest.main()

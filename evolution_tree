@@ -2,32 +2,50 @@ digraph {
 	node [shape=box style=rounded]
 	abxcd [label="abxcd
 (depth: 0, edges: 3)"]
-	abxcd -> cd [label=abx color=red fontcolor=red]
 	abxcd -> bxcd [label=a color=red fontcolor=red]
-	abxcd -> xcd [label=ab color=red fontcolor=red]
-	cd [label="cd
-(depth: 1, edges: 2)"]
-	cd -> cb [label="d→b" color=blue fontcolor=blue]
-	cd -> d [label=c color=red fontcolor=red]
-	cb [label="cb
-(depth: 2, edges: 1)"]
-	cb -> cbx [label=x color=green fontcolor=green]
-	cbx [label="cbx
-(depth: 3, edges: 1)"]
-	cbx -> cbxd [label=d color=green fontcolor=green]
-	cbxd [label="cbxd
-(depth: 4, edges: 0)" color=green penwidth=2]
+	abxcd -> ab [label=xcd color=red fontcolor=red]
+	abxcd -> abxd [label=c color=red fontcolor=red]
 	bxcd [label="bxcd
-(depth: 1, edges: 1)"]
-	bxcd -> bx [label=cd color=red fontcolor=red]
-	bx [label="bx
+(depth: 1, edges: 3)"]
+	bxcd -> bncd [label="x→n" color=blue fontcolor=blue]
+	bxcd -> bxd [label=c color=red fontcolor=red]
+	bxcd -> cd [label=bx color=red fontcolor=red]
+	bncd [label="bncd
+(depth: 2, edges: 1)"]
+	bncd -> bnc [label=d color=red fontcolor=red]
+	bnc [label="bnc
+(depth: 3, edges: 1)"]
+	bnc -> bnm [label="c→m" color=blue fontcolor=blue]
+	bnm [label="bnm
+(depth: 4, edges: 0)" color=green penwidth=2]
+	ab [label="ab
+(depth: 1, edges: 2)"]
+	ab -> kb [label="a→k" color=blue fontcolor=blue]
+	ab -> db [label="a→d" color=blue fontcolor=blue]
+	kb [label="kb
+(depth: 2, edges: 1)"]
+	kb -> kl [label="b→l" color=blue fontcolor=blue]
+	kl [label="kl
+(depth: 3, edges: 0)" color=green penwidth=2]
+	abxd [label="abxd
+(depth: 1, edges: 2)"]
+	abxd -> cbxd [label="a→c" color=blue fontcolor=blue]
+	abxd -> abx [label=d color=red fontcolor=red]
+	cbxd [label="cbxd
 (depth: 2, edges: 0)" color=green penwidth=2]
-	xcd [label="xcd
-(depth: 1, edges: 1)"]
-	xcd -> xbd [label="c→b" color=blue fontcolor=blue]
-	xbd [label="xbd
+	bxd [label="bxd
 (depth: 2, edges: 0)" color=green penwidth=2]
-	d [label="d
+	db [label="db
+(depth: 2, edges: 1)"]
+	db -> dc [label="b→c" color=blue fontcolor=blue]
+	dc [label="dc
+(depth: 3, edges: 0)" color=green penwidth=2]
+	cd [label="cd
+(depth: 2, edges: 1)"]
+	cd -> ch [label="d→h" color=blue fontcolor=blue]
+	ch [label="ch
+(depth: 3, edges: 0)" color=green penwidth=2]
+	abx [label="abx
 (depth: 2, edges: 0)" color=green penwidth=2]
 	label="Глубина дерева: 4" labeljust=c labelloc=t
 }

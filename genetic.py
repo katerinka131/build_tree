@@ -13,51 +13,104 @@ class EvolutionTree:
         self.max_depth = 0  # Переменная для отслеживания максимальной глубины
         
     def find_evolution_path(self, root, leaf):
-        root_list = list(root)
-        leaf_list = list(leaf)
-       
-        path = []
-        j = 0
+        """Находит путь эволюции от root к leaf с использованием алгоритма редакционного расстояния"""
+        n1, n2 = len(root), len(leaf)
         
-        while j < len(leaf_list):
-            if j < len(root_list) and root_list[j] == leaf_list[j]:
-                j += 1
-            else:
-                found = -1
-                for k in range(j, len(root_list)):
-                    if root_list[k] == leaf_list[j]:
-                        found = k
-                        break
+        dp = [[0] * (n1 + 1) for _ in range(n2 + 1)]
+        path = [[None] * (n1 + 1) for _ in range(n2 + 1)]
+        
+        for p in range(n1 + 1):
+            dp[0][p] = p
+            if p > 0:
+                path[0][p] = ('delete', 0, p-1)
+        
+        for q in range(1, n2 + 1):
+            dp[q][0] = q
+            path[q][0] = ('insert', q-1, 0)
+        
+        # Заполнение DP таблицы
+        for q in range(1, n2 + 1):
+            for p in range(1, n1 + 1):
+                i = p - 1  # Индекс в root
+                j = q - 1  # Индекс в leaf
                 
-                if found != -1:
-                    if found > j:
-                        deleted = ''.join(root_list[j:found])
-                        path.append(("del", deleted))
-                        del root_list[j:found]
+                cost = 0 if root[i] == leaf[j] else 1
+                
+                options = [
+                    (dp[q-1][p] + 1, ('insert', q-1, p)),      # Вставка
+                    (dp[q][p-1] + 1, ('delete', q, p-1)),      # Удаление
+                    (dp[q-1][p-1] + cost, ('change', q-1, p-1)) # Замена/совпадение
+                ]
+                
+                min_val, best_path = min(options, key=lambda x: x[0])
+                dp[q][p] = min_val
+                path[q][p] = best_path
+        
+        operations = []
+        q, p = n2, n1
+        
+        while q > 0 or p > 0:
+            if path[q][p] is None:
+                break
+                
+            op_type, next_q, next_p = path[q][p]
+            
+            if op_type == 'insert':
+                # Вставка символа leaf[q-1] перед позицией p
+                operations.append(('add', leaf[q-1], p))
+            elif op_type == 'delete':
+                # Удаление символа root[p-1] на позиции p-1
+                operations.append(('del', root[p-1], p-1))
+            elif op_type == 'change':
+                # Замена символа root[p-1] на leaf[q-1]
+                if root[p-1] != leaf[q-1]:
+                    operations.append(('sub', f"{root[p-1]}→{leaf[q-1]}", p-1))
+                # Для совпадений не добавляем операцию
+            
+            q, p = next_q, next_p
+        
+        operations.reverse()
+        
+        # Преобразование в формат оригинальной функции
+        formatted_path = []
+        current_pos = 0
+        
+        for op in operations:
+            op_type, value, pos = op
+            
+            if op_type == 'add':
+                formatted_path.append(("add", value))
+                current_pos += 1
+                
+            elif op_type == 'del':
+                # Проверяем, есть ли следующие удаления для группировки
+                delete_chars = [value]
+                next_idx = operations.index(op) + 1 if operations.index(op) + 1 < len(operations) else -1
+                
+                if next_idx != -1 and operations[next_idx][0] == 'del' and operations[next_idx][2] == pos + 1:
+                    # Группируем последовательные удаления
+                    while next_idx < len(operations) and operations[next_idx][0] == 'del':
+                        delete_chars.append(operations[next_idx][1])
+                        next_idx += 1
                     
-                    j += 1
+                    formatted_path.append(("del", ''.join(delete_chars)))
+                    # Пропускаем уже обработанные операции
+                    for _ in range(len(delete_chars) - 1):
+                        operations.pop(operations.index(op) + 1)
                 else:
-                    if j < len(root_list):
-                        path.append(("sub", f"{root_list[j]}→{leaf_list[j]}"))
-                        root_list[j] = leaf_list[j]
-                        j += 1
-                    else:
-                        break
+                    formatted_path.append(("del", value))
+                
+            elif op_type == 'sub':
+                formatted_path.append(("sub", value))
+                current_pos += 1
         
-        if j < len(leaf_list):
-            for m in range(j, len(leaf_list)):
-                path.append(("add", leaf_list[m]))
-        
-        if j < len(root_list):
-            deleted = ''.join(root_list[j:])
-            path.append(("del", deleted))
-        
+        # Оптимизация пути (сохранение логики оригинальной функции)
         optimized_path = []
         adds = []
         dels = []
         subs = []
         
-        for op in path:
+        for op in formatted_path:
             if op[0] == "add":
                 adds.append(op)
             elif op[0] == "del":
@@ -65,6 +118,7 @@ class EvolutionTree:
             elif op[0] == "sub":
                 subs.append(op)
         
+        # Сохраняем порядок: сначала удаления, затем замены, затем добавления
         while dels and subs:
             optimized_path.append(dels.pop(0))
             optimized_path.append(subs.pop(0))
@@ -248,20 +302,12 @@ def build_optimal_tree(root, leaves):
         
     return tree
 
-def build(root, leaves):
-    tree = EvolutionTree(root)
-    tree.leaves = set(leaves)
-    for leaf in leaves:
-        path = tree.find_evolution_path(root, leaf)
-        tree.add_path_to_tree(path, leaf, root)
-    return tree
+
 
 if __name__ == "__main__":
-    from tree_data import root, leaves, max_edge_3
-    if not max_edge_3:
-        tree = build(root, leaves)
-    else:
-        tree = build_optimal_tree(root, leaves)
+    from tree_data import root, leaves
+    
+    tree = build_optimal_tree(root, leaves)
     dot = tree.visualize()
     dot.render('evolution_tree', view=True, format='png')
     
