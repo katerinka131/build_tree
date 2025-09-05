@@ -201,7 +201,7 @@ class EvolutionTree:
                 dot.edge(node, child["node"], label=op[1], color=edge_color, fontcolor=edge_color)
         
         # Добавляем информацию о максимальной глубине
-        dot.attr(label=f"Максимальная глубина дерева: {self.max_depth}", labelloc="t", labeljust="c")
+        dot.attr(label=f"Глубина дерева: {self.max_depth}", labelloc="t", labeljust="c")
         
         return dot
 
@@ -218,7 +218,7 @@ def build_optimal_tree(root, leaves):
     longest_path_length, longest_path, longest_leaf = paths[0]
     
     tree.add_path_to_tree(longest_path, longest_leaf, root)
-    print("first:", longest_path, longest_leaf, root)
+    
             
     leaves = []     
     for _,_, leaf in paths[1:]:
@@ -243,18 +243,25 @@ def build_optimal_tree(root, leaves):
         best_node = best_candidate['node']
         best_path = best_candidate['path_remainder']
         path = tree.find_evolution_path(tree.nodes[best_node]["name"], leaf)
-        print(leaf, path)
+        
         tree.add_path_to_tree(best_path, leaf, best_node)
-        print(best_path, leaf, best_node)
-        print("node", best_node)
-        print("leaf",leaf, "\n")
+        
+    return tree
+
+def build(root, leaves):
+    tree = EvolutionTree(root)
+    tree.leaves = set(leaves)
+    for leaf in leaves:
+        path = tree.find_evolution_path(root, leaf)
+        tree.add_path_to_tree(path, leaf, root)
     return tree
 
 if __name__ == "__main__":
-    root = "XYZ"
-    leaves = ["XYZA", "XYZB", "XYZC", "XYA", "XZA", "YZ", "XY", "ZA", "XYZD"]
-
-    tree = build_optimal_tree(root, leaves)
+    from tree_data import root, leaves, max_edge_3
+    if not max_edge_3:
+        tree = build(root, leaves)
+    else:
+        tree = build_optimal_tree(root, leaves)
     dot = tree.visualize()
     dot.render('evolution_tree', view=True, format='png')
     

@@ -1,39 +1,33 @@
 digraph {
 	node [shape=box style=rounded]
-	XYZ [label="XYZ
+	abxcd [label="abxcd
 (depth: 0, edges: 3)"]
-	XYZ -> XZ [label=Y color=red fontcolor=red]
-	XYZ -> Z [label=XY color=red fontcolor=red]
-	XYZ -> XYZA [label=A color=green fontcolor=green]
-	XZ [label="XZ
-(depth: 1, edges: 3)"]
-	XZ -> XZA [label=A color=green fontcolor=green]
-	XZ -> YZ [label="X→Y" color=blue fontcolor=blue]
-	XZ -> XY [label="Z→Y" color=blue fontcolor=blue]
-	XZA [label="XZA
-(depth: 2, edges: 0)" color=green penwidth=2]
-	Z [label="Z
+	abxcd -> cd [label=abx color=red fontcolor=red]
+	abxcd -> bxcd [label=a color=red fontcolor=red]
+	abxcd -> xcd [label=ab color=red fontcolor=red]
+	cd [label="cd
+(depth: 1, edges: 2)"]
+	cd -> cb [label="d→b" color=blue fontcolor=blue]
+	cd -> d [label=c color=red fontcolor=red]
+	cb [label="cb
+(depth: 2, edges: 1)"]
+	cb -> cbx [label=x color=green fontcolor=green]
+	cbx [label="cbx
+(depth: 3, edges: 1)"]
+	cbx -> cbxd [label=d color=green fontcolor=green]
+	cbxd [label="cbxd
+(depth: 4, edges: 0)" color=green penwidth=2]
+	bxcd [label="bxcd
 (depth: 1, edges: 1)"]
-	Z -> ZA [label=A color=green fontcolor=green]
-	ZA [label="ZA
+	bxcd -> bx [label=cd color=red fontcolor=red]
+	bx [label="bx
 (depth: 2, edges: 0)" color=green penwidth=2]
-	XYZA [label="XYZA
-(depth: 1, edges: 3)" color=green penwidth=2]
-	XYZA -> XYZB [label="A→B" color=blue fontcolor=blue]
-	XYZA -> XYZC [label="A→C" color=blue fontcolor=blue]
-	XYZA -> XYA [label=Z color=red fontcolor=red]
-	XYZB [label="XYZB
-(depth: 2, edges: 1)" color=green penwidth=2]
-	XYZB -> XYZD [label="B→D" color=blue fontcolor=blue]
-	XYZC [label="XYZC
+	xcd [label="xcd
+(depth: 1, edges: 1)"]
+	xcd -> xbd [label="c→b" color=blue fontcolor=blue]
+	xbd [label="xbd
 (depth: 2, edges: 0)" color=green penwidth=2]
-	XYA [label="XYA
+	d [label="d
 (depth: 2, edges: 0)" color=green penwidth=2]
-	YZ [label="YZ
-(depth: 2, edges: 0)" color=green penwidth=2]
-	XY [label="XY
-(depth: 2, edges: 0)" color=green penwidth=2]
-	XYZD [label="XYZD
-(depth: 3, edges: 0)" color=green penwidth=2]
-	label="Максимальная глубина дерева: 3" labeljust=c labelloc=t
+	label="Глубина дерева: 4" labeljust=c labelloc=t
 }
