@@ -2,26 +2,12 @@ digraph {
 	node [shape=box style=rounded]
 	abxcd [label="abxcd
 (depth: 0, edges: 3)"]
-	abxcd -> bxcd [label=a color=red fontcolor=red]
 	abxcd -> ab [label=xcd color=red fontcolor=red]
 	abxcd -> abxd [label=c color=red fontcolor=red]
-	bxcd [label="bxcd
-(depth: 1, edges: 3)"]
-	bxcd -> bncd [label="x→n" color=blue fontcolor=blue]
-	bxcd -> bxd [label=c color=red fontcolor=red]
-	bxcd -> cd [label=bx color=red fontcolor=red]
-	bncd [label="bncd
-(depth: 2, edges: 1)"]
-	bncd -> bnc [label=d color=red fontcolor=red]
-	bnc [label="bnc
-(depth: 3, edges: 1)"]
-	bnc -> bnm [label="c→m" color=blue fontcolor=blue]
-	bnm [label="bnm
-(depth: 4, edges: 0)" color=green penwidth=2]
+	abxcd -> dc [label="a→d" color=blue fontcolor=blue]
 	ab [label="ab
-(depth: 1, edges: 2)"]
+(depth: 1, edges: 1)"]
 	ab -> kb [label="a→k" color=blue fontcolor=blue]
-	ab -> db [label="a→d" color=blue fontcolor=blue]
 	kb [label="kb
 (depth: 2, edges: 1)"]
 	kb -> kl [label="b→l" color=blue fontcolor=blue]
@@ -30,22 +16,18 @@ digraph {
 	abxd [label="abxd
 (depth: 1, edges: 2)"]
 	abxd -> cbxd [label="a→c" color=blue fontcolor=blue]
-	abxd -> abx [label=d color=red fontcolor=red]
+	abxd -> bxd [label=a color=red fontcolor=red]
 	cbxd [label="cbxd
 (depth: 2, edges: 0)" color=green penwidth=2]
 	bxd [label="bxd
 (depth: 2, edges: 0)" color=green penwidth=2]
-	db [label="db
-(depth: 2, edges: 1)"]
-	db -> dc [label="b→c" color=blue fontcolor=blue]
 	dc [label="dc
-(depth: 3, edges: 0)" color=green penwidth=2]
-	cd [label="cd
+(depth: 1, edges: 1)" color=green penwidth=2]
+	dc -> c [label=d color=red fontcolor=red]
+	c [label="c
 (depth: 2, edges: 1)"]
-	cd -> ch [label="d→h" color=blue fontcolor=blue]
+	c -> ch [label=h color=green fontcolor=green]
 	ch [label="ch
 (depth: 3, edges: 0)" color=green penwidth=2]
-	abx [label="abx
-(depth: 2, edges: 0)" color=green penwidth=2]
-	label="Глубина дерева: 4" labeljust=c labelloc=t
+	label="Глубина дерева: 3" labeljust=c labelloc=t
 }
